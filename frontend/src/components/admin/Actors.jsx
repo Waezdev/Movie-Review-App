@@ -11,7 +11,7 @@ import NotFoundText from "../NotFoundText";
 let currentPageNo = 0;
 const limit = 16;
 
-export default function Actors() {
+export default function Actors({fetchTrigger,toggleFetchTrigger}) {
   const [actors, setActors] = useState([]);
   const [results, setResults] = useState([]);
   const [reachedToEnd, setReachedToEnd] = useState(false);
@@ -38,7 +38,7 @@ export default function Actors() {
   const handleOnNextClick = () => {
     if (reachedToEnd) return;
     currentPageNo += 1;
-    fetchActors(currentPageNo);
+    fetchActorsData()
   };
 
   const handleOnPrevClick = () => {
@@ -46,7 +46,7 @@ export default function Actors() {
     if (reachedToEnd) setReachedToEnd(false);
 
     currentPageNo -= 1;
-    fetchActors(currentPageNo);
+    fetchActorsData()
   };
 
   const handleOnEditClick = (profile) => {
@@ -91,14 +91,25 @@ export default function Actors() {
     if (error) return updateNotification("error", error);
     updateNotification("success", message);
     hideConfirmModal();
-    fetchActors(currentPageNo);
+    fetchActorsData()
   };
 
   const hideConfirmModal = () => setShowConfirmModal(false);
 
   useEffect(() => {
-    fetchActors(currentPageNo);
+    fetchActorsData()
   }, []);
+
+  useEffect(() => {
+  if (fetchTrigger) {
+    fetchActorsData();
+    toggleFetchTrigger(false);
+  }
+}, [fetchTrigger]);
+
+  const fetchActorsData = () =>{
+    fetchActors(currentPageNo); 
+  }
 
   return (
     <>

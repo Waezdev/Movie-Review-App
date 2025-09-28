@@ -13,12 +13,14 @@ import SearchMovies from "../components/admin/SearchMovies";
 export default function AdminNavigator() {
   const [showMovieUploadModal, setShowMovieUploadModal] = useState(false);
   const [showActorUploadModal, setShowActorUploadModal] = useState(false);
+  const [fetchTrigger, setFetchTrigger] = useState(false);
 
   const displayMovieUploadModal = () => {
     setShowMovieUploadModal(true);
   };
 
   const hideMovieUploadModal = () => {
+    setFetchTrigger(prev=>!prev.fetchTrigger)
     setShowMovieUploadModal(false);
   };
 
@@ -28,7 +30,12 @@ export default function AdminNavigator() {
 
   const hideActorUploadModal = () => {
     setShowActorUploadModal(false);
+    setFetchTrigger(prev=>!prev.fetchTrigger)
   };
+
+  const toggleFetchTrigger  = () => {
+    setFetchTrigger(prev=>!prev.fetchTrigger)
+  }
 
   return (
     <>
@@ -41,8 +48,8 @@ export default function AdminNavigator() {
           />
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/movies" element={<Movies />} />
-            <Route path="/actors" element={<Actors />} />
+            <Route path="/movies" element={<Movies fetchTrigger={fetchTrigger} toggleFetchTrigger ={toggleFetchTrigger} />} />
+            <Route path="/actors" element={<Actors fetchTrigger={fetchTrigger} toggleFetchTrigger= {toggleFetchTrigger } />} />
             <Route path="/search" element={<SearchMovies/>}/>
             <Route path="*" element={<NotFound />} />
           </Routes>

@@ -9,7 +9,7 @@ import NextAndPrevButton from "../NextAndPrevButton";
 let limit = 10;
 let currentPageNo = 0;
 
-export default function Movies() {
+export default function Movies({fetchTrigger, toggleFetchTrigger}) {
   const [movies, setMovies] = useState([]);
   const [reachedToEnd, setReachedToEnd] = useState([]);
   const [busy, setBusy] = useState(false);
@@ -93,6 +93,13 @@ export default function Movies() {
   useEffect(() => {
     fetchMovies();
   }, []);
+
+  useEffect(() => {
+    if (fetchTrigger) {
+      handleUIUpdate()
+      toggleFetchTrigger(false);
+    }
+  }, [fetchTrigger]);
 
   return (
     <>
